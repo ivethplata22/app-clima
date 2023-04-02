@@ -1,10 +1,22 @@
+const fs = require('fs');
 const axios = require('axios');
 
 class Busquedas {
     historial = [];
+    infoPath = './info/data.json';
 
     constructor() {
-        // TODO: Leer db si existe
+        this.leerInfo();
+    }
+
+    get historialCapitalizado() {
+        let historialCap = [...this.historial];
+        historialCap.forEach((element, index, arrayH) => {
+            arrayH[index] = element.split(" ").map(function(word) {
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            }).join(" ");
+        });
+        return historialCap;
     }
 
     get paramsMapbox() {
@@ -58,6 +70,30 @@ class Busquedas {
         } catch (error) {
             return null;
         }
+    }
+
+    agregarHistorial(lugar='') {
+        if(this.historial.includes(lugar.toLocaleLowerCase()))
+            return;
+        
+        this.historial.unshift(lugar.toLocaleLowerCase());
+        this.guardarInfo();
+    }
+
+    guardarInfo() {
+        const payload = {
+            historial: this.historial
+        }
+
+        fs.writeFileSync(this.infoPath, JSON.stringify(payload));
+    }
+
+    leerInfo() {
+        if(!fs.existsSync(this.infoPath))
+            return null;
+        
+        let info = JSON.parse(fs.readFileSync(this.infoPath, { encoding: 'utf-8' }));
+        this.historial = info.historial;
     }
 }
 
