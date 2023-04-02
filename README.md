@@ -1,5 +1,5 @@
 # Notas de la aplicación:
-Aplicación interactiva en node para búsqueda de países. El programa resalta información de geolocalización del lugar así como el clima y una breve descripción del mismo
+Aplicación interactiva en node para búsqueda de lugares. El programa resalta información de geolocalización del lugar así como el clima y una breve descripción
 
 Configurar archivo .env
 ```
