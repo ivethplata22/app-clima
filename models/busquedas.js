@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 class Busquedas {
     historial = [];
 
@@ -5,12 +7,28 @@ class Busquedas {
         // TODO: Leer db si existe
     }
 
-    async ciudad(lugar='') {
-        // TODO: Peticion http
-        console.log(lugar);
+    get paramsMapbox() {
+        return {
+            'access_token': 'pk.eyJ1IjoiaXZldGhwbCIsImEiOiJjbGZ6MHphcXIwcGQ0M3VwYXljd3lza2luIn0.F5kUR8QSXiSQoBtLZqBXzw',
+            'limit': 5,
+            'language': 'es'
+        };
+    }
 
-        // TODO: Retornar los lugares que coincidan con lugar
-        return [];
+    async ciudad(lugar='') {
+        try {
+            const instance = axios.create({
+                baseURL: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lugar}.json`,
+                params: this.paramsMapbox
+            });
+            const resp = await instance.get();
+            console.log(resp.data);
+
+            // TODO: Retornar los lugares que coincidan con lugar
+            return [];
+        } catch (error) {
+            return [];
+        }
     }
 }
 
