@@ -22,10 +22,12 @@ class Busquedas {
                 params: this.paramsMapbox
             });
             const resp = await instance.get();
-            console.log(resp.data);
-
-            // TODO: Retornar los lugares que coincidan con lugar
-            return [];
+            return resp.data.features.map( lugar => ({
+                id: lugar.id,
+                name: lugar.place_name,
+                lng: lugar.center[0],
+                lat: lugar.center[1]
+            }));
         } catch (error) {
             return [];
         }
